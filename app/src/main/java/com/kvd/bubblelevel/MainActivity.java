@@ -41,6 +41,7 @@ public final class MainActivity extends Activity implements SensorEventListener 
         theme=LevelTheme.fromId(prefs.getString("theme","classic"));
         setTheme(themeStyle());
         super.onCreate(state);
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().setStatusBarColor(Color.BLACK); getWindow().setNavigationBarColor(Color.BLACK);
         prefs=getSharedPreferences("level",MODE_PRIVATE);
@@ -77,7 +78,11 @@ public final class MainActivity extends Activity implements SensorEventListener 
                     else toast(R.string.keep_still);
                 }).show();
         });
-        sound.setOnClickListener(v->{soundEnabled=!soundEnabled; prefs.edit().putBoolean("sound",soundEnabled).apply(); announced=false; update();});
+        sound.setOnClickListener(v->{
+            soundEnabled=!soundEnabled;prefs.edit().putBoolean("sound",soundEnabled).apply();announced=false;
+            if(soundEnabled) playLevelTone(); else if(tone!=null) tone.stopTone();
+            update();
+        });
         hold.setOnClickListener(v->{model.toggleHold(); announced=false; update();});
         settings.setOnClickListener(v->settings()); applyTheme(); update();
     }
@@ -137,7 +142,7 @@ public final class MainActivity extends Activity implements SensorEventListener 
     @Override protected void onResume() {
         super.onResume(); model.resetFilter(); announced=false;
         if(sensor!=null) registered=sensors.registerListener(this,sensor,SensorManager.SENSOR_DELAY_GAME);
-        try { tone=new ToneGenerator(AudioManager.STREAM_MUSIC,35); } catch(RuntimeException ignored) { tone=null; }
+        try { tone=new ToneGenerator(AudioManager.STREAM_MUSIC,ToneGenerator.MAX_VOLUME); } catch(RuntimeException ignored) { tone=null; }
         update();
     }
     @Override protected void onPause() {
@@ -151,6 +156,14 @@ public final class MainActivity extends Activity implements SensorEventListener 
         update();
     }
     @Override public void onAccuracyChanged(Sensor s,int value) { accuracy=value; update(); }
+    private boolean playLevelTone() {
+        if(tone==null) { toast(R.string.audio_unavailable); return false; }
+        // A sustained dual-frequency tone carries better than the old short, attenuated beep.
+        boolean started=tone.startTone(ToneGenerator.TONE_DTMF_5,400);
+        lastBeep=SystemClock.elapsedRealtime();
+        if(!started) toast(R.string.audio_unavailable);
+        return started;
+    }
     private void update() {
         if(level==null) return;
         boolean available=sensor!=null && registered;
@@ -167,7 +180,7 @@ public final class MainActivity extends Activity implements SensorEventListener 
         if(!centered || !good || model.isHeld()) announced=false;
         long now=SystemClock.elapsedRealtime();
         if(soundEnabled && centered && good && !model.isHeld() && !announced && now-lastBeep>1000 && tone!=null) {
-            tone.startTone(ToneGenerator.TONE_PROP_BEEP,100); lastBeep=now; announced=true;
+            announced=playLevelTone();
         }
     }
 }

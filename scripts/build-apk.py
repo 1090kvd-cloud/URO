@@ -32,7 +32,11 @@ key=pathlib.Path(os.environ.get('LEVEL_DEBUG_KEY',str(pathlib.Path.home()/'.andr
 key.parent.mkdir(parents=True,exist_ok=True)
 if not key.exists():
     run('keytool','-genkeypair','-keystore',key,'-storepass','android','-keypass','android','-alias','androiddebugkey','-keyalg','RSA','-keysize','2048','-validity','10000','-dname','CN=Android Debug,O=KVD Development,C=US')
-out=root/'build'/'Uroven-1.1.0.apk'
-run('java','-jar',bt/'lib/apksigner.jar','sign','--ks',key,'--ks-pass','pass:android','--key-pass','pass:android','--out',out,build/'aligned.apk')
-run('java','-jar',bt/'lib/apksigner.jar','verify','--verbose',out)
+out=root/'build'/'Uroven-1.1.1.apk'
+signed=build/'signed.apk'
+run('java','-jar',bt/'lib/apksigner.jar','sign','--ks',key,'--ks-pass','pass:android','--key-pass','pass:android','--out',signed,build/'aligned.apk')
+run('java','-jar',bt/'lib/apksigner.jar','verify','--verbose',signed)
+with zipfile.ZipFile(signed) as apk:
+    if apk.testzip() is not None: raise SystemExit('Corrupt APK entry')
+os.replace(signed,out)
 print(out)

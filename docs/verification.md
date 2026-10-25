@@ -16,3 +16,7 @@ Application name is «Уровень» in both locales. New original adaptive la
 ## Version 1.1.0
 
 Four explicit palettes (classic green, amber, ice blue, light), persistent theme ID, live palette update without recreating the activity, localized theme menu and themed dialogs. Version code 3. SDK build and signature checks passed; the 59 existing measurement checks pass unchanged. Runtime appearance, theme picker interaction and persistence have not been tested on a physical Android device.
+
+## Version 1.1.1
+
+Audio root cause found in source: tone generator level 35/100 and 100 ms beep. Use MAX_VOLUME (100), a 400 ms dual-frequency DTMF 5 tone, immediate preview on sound enable, and hardware volume buttons targeting STREAM_MUSIC. Disabling sound stops an active tone; pause still releases resources. System volume is not raised automatically. Acoustic loudness and output routing remain unverified on the user device.
