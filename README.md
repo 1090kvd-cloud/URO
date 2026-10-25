@@ -4,11 +4,11 @@
 
 ## Установить на телефон
 
-[**Скачать Uroven-1.0.1.apk**](downloads/Uroven-1.0.1.apk?raw=true)
+[**Скачать Uroven-1.1.0.apk**](downloads/Uroven-1.1.0.apk?raw=true)
 
 Откройте ссылку и скачайте APK (если GitHub показывает страницу файла, нажмите Download raw file). Откройте скачанный файл на телефоне и разрешите установку для приложения, через которое открываете APK. Root и Shizuku не нужны.
 
-Название приложения — «Уровень» при любом языке интерфейса. Версия 1.0.1: новый значок строительного уровня. Сборка с подписью для разработки. Исходный код и APK находятся в одном репозитории. У приложения нет разрешения на Интернет, рекламы и аналитики.
+Название приложения — «Уровень» при любом языке интерфейса. Версия 1.1.0: четыре темы оформления. Настройки → Тема оформления: классическая зелёная, янтарная, ледяная синяя и светлая. Выбор сохраняется; переключение темы не сбрасывает фиксацию и калибровку. Сборка с подписью для разработки. Исходный код и APK находятся в одном репозитории. У приложения нет разрешения на Интернет, рекламы и аналитики.
 
 ## Возможности
 
@@ -47,7 +47,7 @@ sh scripts/test.sh
 python3 scripts/build-apk.py
 ```
 
-APK: `build/Uroven-1.0.1.apk`. Скрипт создаёт локальный ключ для разработки в `~/.android/kvd-level-debug.keystore` либо использует путь `LEVEL_DEBUG_KEY`. Не публикуйте закрытый ключ и не используйте этот ключ разработки для промышленного релиза.
+APK: `build/Uroven-1.1.0.apk`. Скрипт создаёт локальный ключ для разработки в `~/.android/kvd-level-debug.keystore` либо использует путь `LEVEL_DEBUG_KEY`. Не публикуйте закрытый ключ и не используйте этот ключ разработки для промышленного релиза.
 
 ### Android Studio
 
@@ -65,4 +65,4 @@ Workflow `Build Android APK` проверяет модель, собирает �
 
 ## Privacy
 
-Only language, zero offsets, tolerance and sound preference are stored locally. No account, network, location, camera, microphone, or storage permission is requested.
+Only theme, language, zero offsets, tolerance and sound preference are stored locally. No account, network, location, camera, microphone, or storage permission is requested.

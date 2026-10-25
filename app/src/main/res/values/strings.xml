@@ -8,4 +8,9 @@
     <string name="no_sensor">Motion sensor unavailable</string><string name="waiting">Waiting for sensor…</string><string name="frozen">Reading held • tap Release to continue</string><string name="low_accuracy">Sensor reports unreliable accuracy</string><string name="keep_still">Keep the phone still</string><string name="level_ok">Level</string><string name="measuring">Measuring inclination</string>
     <string name="reading">X: %1$.1f degrees, Y: %2$.1f degrees</string>
     <string name="help_text">Place the back of the phone against the surface. X measures left/right tilt; Y measures tilt along the phone. Bubbles move toward the higher side.\n\nCalibrate only against a known level reference. The raised camera housing can tilt the phone: use a flat spacer or a straightedge. Hold freezes the displayed reading. Sound beeps once after settling within the selected tolerance; volume follows media volume.\n\nThe selected tolerance is an indication threshold, not a guaranteed accuracy. Check the phone by turning it 180° on the same surface. Avoid movement while measuring. Calibration and settings are stored locally. No Internet, ads, or tracking.</string>
+    <string name="theme">Theme</string>
+    <string name="theme_classic">Classic green</string>
+    <string name="theme_amber">Amber</string>
+    <string name="theme_blue">Ice blue</string>
+    <string name="theme_light">Light</string>
 </resources>

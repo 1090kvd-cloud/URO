@@ -12,3 +12,7 @@
 ## Version 1.0.1
 
 Application name is «Уровень» in both locales. New original adaptive launcher icon depicts an amber spirit level with a centered green vial; artwork is contained within the adaptive safe area. Version code 2; existing local development signing key retained for in-place updates. Build, badging, signature continuity and ZIP alignment checked for the new APK.
+
+## Version 1.1.0
+
+Four explicit palettes (classic green, amber, ice blue, light), persistent theme ID, live palette update without recreating the activity, localized theme menu and themed dialogs. Version code 3. SDK build and signature checks passed; the 59 existing measurement checks pass unchanged. Runtime appearance, theme picker interaction and persistence have not been tested on a physical Android device.
