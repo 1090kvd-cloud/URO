@@ -37,6 +37,9 @@ public final class LevelModel {
         if(!ready || Math.hypot(gx,gy)/Math.hypot(Math.hypot(gx,gy),gz)<Math.sin(Math.toRadians(5))) return Double.NaN;
         return (Math.toDegrees(Math.atan2(-gx,gy))+360)%360;
     }
+    public double inclinationFromFlat() {
+        return ready?Math.toDegrees(Math.atan2(Math.hypot(gx,gy),Math.abs(gz))):Double.NaN;
+    }
     public boolean ready() { return held || ready; }
     public boolean stable() { return ready && stable; }
     public boolean isHeld() { return held; }

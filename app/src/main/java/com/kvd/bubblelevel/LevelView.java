@@ -12,6 +12,7 @@ public final class LevelView extends View {
     private final RectF rect=new RectF();
     private final Shader leather;
     private double x,y,rotation;
+    private int rotationTitle=R.string.rotation_angle;
     private boolean ready,held,centered;
     private long lastDescription;
     private LevelTheme theme=LevelTheme.fromId("classic");
@@ -31,8 +32,8 @@ public final class LevelView extends View {
         setContentDescription(context.getString(R.string.waiting));
     }
     public void setThemePalette(LevelTheme theme) { this.theme=theme;invalidate(); }
-    public void setReading(double x,double y,double rotation,boolean ready,boolean held,boolean centered) {
-        this.x=x;this.y=y;this.rotation=rotation;this.ready=ready;this.held=held;this.centered=centered;
+    public void setReading(double x,double y,double rotation,int rotationTitle,boolean ready,boolean held,boolean centered) {
+        this.x=x;this.y=y;this.rotation=rotation;this.rotationTitle=rotationTitle;this.ready=ready;this.held=held;this.centered=centered;
         long now=android.os.SystemClock.elapsedRealtime();
         if(now-lastDescription>500) {
             setContentDescription(ready?(Double.isFinite(rotation)?getContext().getString(R.string.reading_rotation,x,y,rotation):getContext().getString(R.string.reading,x,y)):getContext().getString(R.string.waiting));lastDescription=now;
@@ -125,7 +126,7 @@ public final class LevelView extends View {
             pointer.lineTo(cx+(float)Math.sin(a+.055)*97,cy-(float)Math.cos(a+.055)*97);
             pointer.close();fill(theme.accent);c.drawPath(pointer,p);
         }
-        text(c,getContext().getString(R.string.rotation_angle),cx,452,12,theme.muted,Typeface.DEFAULT);
+        text(c,getContext().getString(rotationTitle),cx,452,12,theme.muted,Typeface.DEFAULT);
         String value=ready && Double.isFinite(rotation)?format((Math.round(rotation*10)/10.)%360)+"°":"—";
         text(c,value,cx,477,23,theme.accent,Typeface.create("sans-serif-medium",Typeface.NORMAL));
     }
