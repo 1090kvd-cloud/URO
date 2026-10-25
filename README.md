@@ -1,14 +1,14 @@
-# Уровень / Bubble Level
+# Уровень
 
 Нативный пузырьковый уровень для Android 8.0 и новее. Русский и английский языки, автоматический выбор языка телефона и ручное переключение в настройках.
 
 ## Установить на телефон
 
-[**Скачать BubbleLevel-1.0.0.apk**](downloads/BubbleLevel-1.0.0.apk?raw=true)
+[**Скачать Uroven-1.0.1.apk**](downloads/Uroven-1.0.1.apk?raw=true)
 
 Откройте ссылку и скачайте APK (если GitHub показывает страницу файла, нажмите Download raw file). Откройте скачанный файл на телефоне и разрешите установку для приложения, через которое открываете APK. Root и Shizuku не нужны.
 
-Это первая сборка с подписью для разработки. Исходный код и APK находятся в одном репозитории. У приложения нет разрешения на Интернет, рекламы и аналитики.
+Название приложения — «Уровень» при любом языке интерфейса. Версия 1.0.1: новый значок строительного уровня. Сборка с подписью для разработки. Исходный код и APK находятся в одном репозитории. У приложения нет разрешения на Интернет, рекламы и аналитики.
 
 ## Возможности
 
@@ -47,7 +47,7 @@ sh scripts/test.sh
 python3 scripts/build-apk.py
 ```
 
-APK: `build/BubbleLevel-1.0.0.apk`. Скрипт создаёт локальный ключ для разработки в `~/.android/kvd-level-debug.keystore` либо использует путь `LEVEL_DEBUG_KEY`. Не публикуйте закрытый ключ и не используйте этот ключ разработки для промышленного релиза.
+APK: `build/Uroven-1.0.1.apk`. Скрипт создаёт локальный ключ для разработки в `~/.android/kvd-level-debug.keystore` либо использует путь `LEVEL_DEBUG_KEY`. Не публикуйте закрытый ключ и не используйте этот ключ разработки для промышленного релиза.
 
 ### Android Studio
 
@@ -55,13 +55,13 @@ APK: `build/BubbleLevel-1.0.0.apk`. Скрипт создаёт локальны
 
 ### GitHub Actions
 
-Workflow `Build Android APK` проверяет модель, собирает и проверяет APK при push в main или ручном запуске. Скачайте артефакт `BubbleLevel-APK` со страницы завершённого запуска.
+Workflow `Build Android APK` проверяет модель, собирает и проверяет APK при push в main или ручном запуске. Скачайте артефакт `Uroven-APK` со страницы завершённого запуска.
 
 В CI по умолчанию создаётся новый ключ разработки на каждом запуске. APK из разных запусков и APK из `downloads/` имеют разные подписи: для перехода между ними потребуется удалить старое приложение (с потерей его локальных настроек). Для обновлений с сохранением данных нужен один постоянный закрытый ключ; перед публикацией в магазине настройте отдельную подпись релизов. Закрытые ключи в репозиторий не включены.
 
 ## English
 
-Native Android 8+ spirit level with three animated vials, X/Y inclination, calibration, reading hold, optional level beep, and English/Russian UI. No Internet permission, ads, or analytics. Install the development APK linked above. Accuracy depends on the device and reference calibration; no real-device test has been performed yet.
+Уровень is a native Android 8+ spirit level with three animated vials, X/Y inclination, calibration, reading hold, optional level beep, and English/Russian UI. No Internet permission, ads, or analytics. Install the development APK linked above. Accuracy depends on the device and reference calibration; no real-device test has been performed yet.
 
 ## Privacy
 

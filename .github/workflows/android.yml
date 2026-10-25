@@ -24,6 +24,6 @@ jobs:
         run: python3 scripts/build-apk.py
       - uses: actions/upload-artifact@v4
         with:
-          name: BubbleLevel-APK
-          path: build/BubbleLevel-1.0.0.apk
+          name: Uroven-APK
+          path: build/Uroven-1.0.1.apk
           if-no-files-found: error

@@ -8,3 +8,7 @@
 - Rendering uses vector Canvas artwork; no source app graphics or video frames are included.
 - Runtime/device/emulator testing was not available. Android Studio/Gradle build and hosted Actions still require their own run; the SDK build route is verified locally.
 - Development signing only. CI regenerates its debug key; cross-key updates require uninstall. For production updates, configure a persistent private release key.
+
+## Version 1.0.1
+
+Application name is «Уровень» in both locales. New original adaptive launcher icon depicts an amber spirit level with a centered green vial; artwork is contained within the adaptive safe area. Version code 2; existing local development signing key retained for in-place updates. Build, badging, signature continuity and ZIP alignment checked for the new APK.
