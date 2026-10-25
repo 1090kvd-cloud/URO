@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Bubble Level</string>
+    <string name="calibrate">Calibrate</string><string name="sound">Sound</string><string name="sound_on">Sound on</string><string name="sound_off">Sound off</string><string name="hold">Hold</string><string name="release">Release</string><string name="settings">Settings</string>
+    <string name="cancel">Cancel</string><string name="set_zero">Set zero</string>
+    <string name="calibration_help">Place the phone on a known level surface, keep it still, then set zero. The current position will become your reference.</string>
+    <string name="calibrated">Zero saved</string><string name="calibration_reset">Calibration reset</string>
+    <string name="language">Language</string><string name="system_language">System language</string><string name="tolerance">Level tolerance</string><string name="reset_calibration">Reset calibration</string><string name="help">How to use</string><string name="unlock_first">Release the held reading first</string>
+    <string name="no_sensor">Motion sensor unavailable</string><string name="waiting">Waiting for sensor…</string><string name="frozen">Reading held • tap Release to continue</string><string name="low_accuracy">Sensor reports unreliable accuracy</string><string name="keep_still">Keep the phone still</string><string name="level_ok">Level</string><string name="measuring">Measuring inclination</string>
+    <string name="reading">X: %1$.1f degrees, Y: %2$.1f degrees</string>
+    <string name="help_text">Place the back of the phone against the surface. X measures left/right tilt; Y measures tilt along the phone. Bubbles move toward the higher side.\n\nCalibrate only against a known level reference. The raised camera housing can tilt the phone: use a flat spacer or a straightedge. Hold freezes the displayed reading. Sound beeps once after settling within the selected tolerance; volume follows media volume.\n\nThe selected tolerance is an indication threshold, not a guaranteed accuracy. Check the phone by turning it 180° on the same surface. Avoid movement while measuring. Calibration and settings are stored locally. No Internet, ads, or tracking.</string>
+</resources>

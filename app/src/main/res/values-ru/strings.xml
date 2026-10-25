@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Уровень</string>
+    <string name="calibrate">Калибровка</string><string name="sound">Звук</string><string name="sound_on">Звук вкл.</string><string name="sound_off">Звук выкл.</string><string name="hold">Фиксация</string><string name="release">Отпустить</string><string name="settings">Настройки</string>
+    <string name="cancel">Отмена</string><string name="set_zero">Задать ноль</string>
+    <string name="calibration_help">Положите телефон на заведомо ровную горизонтальную поверхность, дождитесь неподвижности и задайте ноль. Текущее положение станет опорным.</string>
+    <string name="calibrated">Ноль сохранён</string><string name="calibration_reset">Калибровка сброшена</string>
+    <string name="language">Язык</string><string name="system_language">Как в системе</string><string name="tolerance">Допуск выравнивания</string><string name="reset_calibration">Сбросить калибровку</string><string name="help">Как пользоваться</string><string name="unlock_first">Сначала отпустите фиксацию</string>
+    <string name="no_sensor">Датчик движения недоступен</string><string name="waiting">Ожидание датчика…</string><string name="frozen">Показания зафиксированы</string><string name="low_accuracy">Датчик сообщает о недостоверных показаниях</string><string name="keep_still">Держите телефон неподвижно</string><string name="level_ok">Ровно</string><string name="measuring">Измерение наклона</string>
+    <string name="reading">X: %1$.1f градуса, Y: %2$.1f градуса</string>
+    <string name="help_text">Приложите заднюю сторону телефона к поверхности. X показывает наклон влево и вправо, Y — вдоль телефона. Пузырьки движутся к приподнятой стороне.\n\nКалибруйте только по проверенной горизонтальной поверхности. Выступ камеры может наклонять телефон: используйте плоскую проставку или ровную рейку. Фиксация останавливает показания на экране. Звук срабатывает один раз после стабилизации в пределах выбранного допуска; громкость регулируется как для мультимедиа.\n\nДопуск — это порог индикации, а не гарантированная точность. Проверьте телефон, развернув его на той же поверхности на 180°. Не перемещайте телефон во время измерения. Калибровка и настройки сохраняются на устройстве. Без интернета, рекламы и отслеживания.</string>
+</resources>

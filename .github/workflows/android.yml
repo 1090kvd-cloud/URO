@@ -1,0 +1,29 @@
+name: Build Android APK
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+      - name: Install SDK packages
+        run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
+      - name: Test inclination model
+        run: sh scripts/test.sh
+      - name: Build and verify installable development APK
+        run: python3 scripts/build-apk.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: BubbleLevel-APK
+          path: build/BubbleLevel-1.0.0.apk
+          if-no-files-found: error
