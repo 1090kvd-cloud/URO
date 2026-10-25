@@ -187,7 +187,7 @@ public final class MainActivity extends Activity implements SensorEventListener 
             if(tone!=null)tone.stopTone();
         }
         boolean signalAligned=model.ready() && SignalMode.aligned(target,model.x(),model.y(),tolerance);
-        level.setReading(model.x(),model.y(),model.ready(),model.isHeld(),centered);
+        level.setReading(model.x(),model.y(),model.rotation(),model.ready(),model.isHeld(),centered);
         calibrate.setEnabled(available && model.ready() && !model.isHeld()); calibrate.setAlpha(calibrate.isEnabled()?1f:.4f);
         hold.setEnabled(available && model.ready()); hold.setAlpha(hold.isEnabled()?1f:.4f);
         sound.setText("♪\n"+getString(soundEnabled?R.string.sound_on:R.string.sound_off)); sound.setTextColor(soundEnabled?theme.accent:theme.muted);

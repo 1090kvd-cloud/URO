@@ -24,3 +24,7 @@ Audio root cause found in source: tone generator level 35/100 and 100 ms beep. U
 ## Version 1.2.0
 
 Sound control now has persistent auto/both/X/Y modes. Automatic posture selection uses uncalibrated inclination so saved zero offsets do not select the wrong vial. Circular display remains based on both axes; sound and status use the selected target. Stable/valid sensor, sound enabled and hold-off gates still apply; target changes rearm the one-shot signal. Settings and long-press Sound expose the selector in both languages. 59 measurement and 30 axis sound checks pass, including actual gravity vectors for flat, standing and either side, selected-axis independence, off-level rejection, tolerance and nonfinite input. Physical playback and UI interactions remain unverified on a device.
+
+## Version 1.3.0
+
+X/Y vials use a labeled ±90° scale matching the center-position mapping; current inclination is shown adjacent to each vial. The circular dial has 0–360° clockwise handset rotation labels, a pointer and numeric readout. Rotation is computed from filtered gravity relative to top-edge-up, independent of X/Y zero calibration; it is not a compass. Below 5° inclination from flat, rotation is undefined and shown as a dash. Hold captures rotation together with X/Y, including invalid live samples. 109 checks pass: 59 measurement, 30 axis sound and 20 scale/rotation checks. SDK compilation and APK verification passed. Physical UI/rendering and sensor accuracy still require device testing.

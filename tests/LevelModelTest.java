@@ -39,9 +39,9 @@ public final class LevelModelTest {
       }
       yes(!moving.stable());
     }
-    near(BubbleGeometry.horizontal(10),.4); near(BubbleGeometry.vertical(10),-.4);
+    near(BubbleGeometry.horizontal(10),10./90); near(BubbleGeometry.vertical(10),-10./90);
     near(BubbleGeometry.horizontal(-90),-1); near(BubbleGeometry.vertical(-90),1);
-    double[] point=BubbleGeometry.circle(25,25); near(point[0],Math.sqrt(.5)); near(point[1],-Math.sqrt(.5));
+    double[] point=BubbleGeometry.circle(25,25); near(point[0],25./90); near(point[1],-25./90);
     System.out.println("PASS: "+checks+" measurement checks");
   }
 }

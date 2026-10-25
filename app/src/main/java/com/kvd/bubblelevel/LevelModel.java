@@ -3,7 +3,7 @@ package com.kvd.bubblelevel;
 /** Screen X points right, screen Y points toward the top edge. Angles are degrees. */
 public final class LevelModel {
     private boolean ready, held, stable;
-    private double gx, gy, gz, rawX, rawY, zeroX, zeroY, heldX, heldY, lastTime, quietSince;
+    private double gx, gy, gz, rawX, rawY, zeroX, zeroY, heldX, heldY, heldRotation, lastTime, quietSince;
     public void sample(double x, double y, double z, int rotation, double time) {
         if (!Double.isFinite(x) || !Double.isFinite(y) || !Double.isFinite(z) || !Double.isFinite(time)) { invalidate(); return; }
         double norm=Math.sqrt(x*x+y*y+z*z);
@@ -31,13 +31,19 @@ public final class LevelModel {
     }
     public double x() { return held?heldX:rawX-zeroX; }
     public double y() { return held?heldY:rawY-zeroY; }
+    /** Clockwise handset rotation relative to gravity, 0 = top edge upward. Undefined near flat. */
+    public double rotation() {
+        if(held) return heldRotation;
+        if(!ready || Math.hypot(gx,gy)/Math.hypot(Math.hypot(gx,gy),gz)<Math.sin(Math.toRadians(5))) return Double.NaN;
+        return (Math.toDegrees(Math.atan2(-gx,gy))+360)%360;
+    }
     public boolean ready() { return held || ready; }
     public boolean stable() { return ready && stable; }
     public boolean isHeld() { return held; }
     public boolean toggleHold() {
         if(held) { held=false; return false; }
         if(!ready) return false;
-        if(!held) { heldX=x(); heldY=y(); }
+        if(!held) { heldX=x(); heldY=y(); heldRotation=rotation(); }
         held=!held; return held;
     }
     public boolean calibrate() {

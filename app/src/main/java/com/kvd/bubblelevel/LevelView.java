@@ -11,7 +11,7 @@ public final class LevelView extends View {
     private final Paint p=new Paint(3);
     private final RectF rect=new RectF();
     private final Shader leather;
-    private double x,y;
+    private double x,y,rotation;
     private boolean ready,held,centered;
     private long lastDescription;
     private LevelTheme theme=LevelTheme.fromId("classic");
@@ -31,11 +31,11 @@ public final class LevelView extends View {
         setContentDescription(context.getString(R.string.waiting));
     }
     public void setThemePalette(LevelTheme theme) { this.theme=theme;invalidate(); }
-    public void setReading(double x,double y,boolean ready,boolean held,boolean centered) {
-        this.x=x;this.y=y;this.ready=ready;this.held=held;this.centered=centered;
+    public void setReading(double x,double y,double rotation,boolean ready,boolean held,boolean centered) {
+        this.x=x;this.y=y;this.rotation=rotation;this.ready=ready;this.held=held;this.centered=centered;
         long now=android.os.SystemClock.elapsedRealtime();
         if(now-lastDescription>500) {
-            setContentDescription(ready?getContext().getString(R.string.reading,x,y):getContext().getString(R.string.waiting));lastDescription=now;
+            setContentDescription(ready?(Double.isFinite(rotation)?getContext().getString(R.string.reading_rotation,x,y,rotation):getContext().getString(R.string.reading,x,y)):getContext().getString(R.string.waiting));lastDescription=now;
         }
         postInvalidateOnAnimation();
     }
@@ -48,9 +48,10 @@ public final class LevelView extends View {
         c.save();c.translate((getWidth()-360*s)/2,(getHeight()-594*s)/2);c.scale(s,s);
         fill(theme.background); if(!theme.light) p.setShader(leather);c.drawRect(0,0,360,594,p);p.setShader(null);
         if(!theme.light) p.setShader(new RadialGradient(180,230,380,new int[]{0x00000000,0xff000000},new float[]{.35f,1f},Shader.TileMode.CLAMP));c.drawRect(0,0,360,594,p);p.setShader(null);
-        vial(c,14,31,346,105,false);
-        vial(c,14,120,88,452,true);
-        circular(c,232,286,112);
+        vial(c,14,42,346,116,false);
+        vial(c,14,160,74,470,true);
+        circular(c,230,315,94);
+        rotationScale(c,230,315);
         digitalPanel(c);
         if(held) { text(c,getContext().getString(R.string.hold),180,588,11,theme.accent,Typeface.DEFAULT); }
         c.restore();
@@ -74,16 +75,59 @@ public final class LevelView extends View {
         c.save();c.clipRect(il,it,ir,ib);
         float cx=(il+ir)/2,cy=(it+ib)/2;
         stroke(theme.line,1.3f);
-        if(vertical) {c.drawLine(il,cy-43,ir,cy-43,p);c.drawLine(il,cy+43,ir,cy+43,p);}
-        else {c.drawLine(cx-43,it,cx-43,ib,p);c.drawLine(cx+43,it,cx+43,ib,p);}
+        if(vertical) c.drawLine(il,cy,ir,cy,p);
+        else c.drawLine(cx,it,cx,ib,p);
         if(ready) {
             float shift=(float)(vertical?BubbleGeometry.vertical(y):BubbleGeometry.horizontal(x));
-            if(vertical) bubble(c,cx,cy+shift*((ib-it)/2-32),23,31);
+            if(vertical) bubble(c,cx,cy+shift*((ib-it)/2-32),(ir-il)*.42f,31);
             else bubble(c,cx+shift*((ir-il)/2-32),cy,31,23);
         }
         fill(0x33ffffff);Path shine=new Path();shine.moveTo(il,it);shine.lineTo(ir,it);shine.lineTo(il,vertical?it+(ib-it)*.42f:ib);shine.close();c.drawPath(shine,p);
         c.restore();
         if(!ready) text(c,"—",cx,cy+7,24,theme.line,Typeface.DEFAULT);
+        linearScale(c,l,t,r,b,vertical);
+    }
+    private void linearScale(Canvas c,float l,float t,float r,float b,boolean vertical) {
+        float cx=(l+r)/2,cy=(t+b)/2;
+        float travel=(vertical?(b-t-20):(r-l-20))/2-32;
+        for(int d=-90;d<=90;d+=15) {
+            boolean major=d%30==0;
+            stroke(theme.muted,major?1.2f:.7f);
+            if(vertical) {
+                float pos=cy-d/90f*travel;
+                c.drawLine(r+2,pos,r+(major?9:6),pos,p);
+                if(major)text(c,degreeLabel(d),r+21,pos+3,10,theme.text,Typeface.DEFAULT);
+            } else {
+                float pos=cx+d/90f*travel;
+                c.drawLine(pos,b+2,pos,b+(major?10:6),p);
+                if(major)text(c,degreeLabel(d),pos,b+23,10,theme.text,Typeface.DEFAULT);
+            }
+        }
+        String caption=(vertical?"Y: ":"X: ")+(ready?format(vertical?y:x)+"°":"—");
+        text(c,caption,cx,t-(vertical?9:14),vertical?11:16,theme.text,Typeface.create("sans-serif-medium",Typeface.NORMAL));
+    }
+    private String degreeLabel(int degrees) { return (degrees<0?"−"+(-degrees):Integer.toString(degrees))+"°"; }
+    private void rotationScale(Canvas c,float cx,float cy) {
+        for(int d=0;d<360;d+=5) {
+            double angle=Math.toRadians(d);
+            float sin=(float)Math.sin(angle),cos=(float)Math.cos(angle);
+            boolean major=d%30==0;
+            stroke(theme.muted,major?1.2f:.65f);
+            float inner=major?99:103;
+            c.drawLine(cx+sin*inner,cy-cos*inner,cx+sin*107,cy-cos*107,p);
+            if(major)text(c,d+"°",cx+sin*113,cy-cos*113+3,10,theme.text,Typeface.DEFAULT);
+        }
+        if(ready && Double.isFinite(rotation)) {
+            double a=Math.toRadians(rotation);
+            Path pointer=new Path();
+            pointer.moveTo(cx+(float)Math.sin(a)*110,cy-(float)Math.cos(a)*110);
+            pointer.lineTo(cx+(float)Math.sin(a-.055)*97,cy-(float)Math.cos(a-.055)*97);
+            pointer.lineTo(cx+(float)Math.sin(a+.055)*97,cy-(float)Math.cos(a+.055)*97);
+            pointer.close();fill(theme.accent);c.drawPath(pointer,p);
+        }
+        text(c,getContext().getString(R.string.rotation_angle),cx,452,12,theme.muted,Typeface.DEFAULT);
+        String value=ready && Double.isFinite(rotation)?format((Math.round(rotation*10)/10.)%360)+"°":"—";
+        text(c,value,cx,477,23,theme.accent,Typeface.create("sans-serif-medium",Typeface.NORMAL));
     }
     private void circular(Canvas c,float cx,float cy,float radius) {
         fill(0xff080908);c.drawCircle(cx,cy+3,radius+3,p);
