@@ -24,6 +24,7 @@ public final class MainActivity extends Activity implements SensorEventListener 
     private ToneGenerator tone;
     private boolean soundEnabled, announced, registered;
     private float tolerance;
+    private String soundMode, activeSoundTarget="";
     private long lastBeep;
     private int accuracy=SensorManager.SENSOR_STATUS_ACCURACY_HIGH;
 
@@ -46,6 +47,7 @@ public final class MainActivity extends Activity implements SensorEventListener 
         getWindow().setStatusBarColor(Color.BLACK); getWindow().setNavigationBarColor(Color.BLACK);
         prefs=getSharedPreferences("level",MODE_PRIVATE);
         soundEnabled=prefs.getBoolean("sound",false); tolerance=prefs.getFloat("tolerance",.3f);
+        soundMode=SignalMode.IDS[SignalMode.index(prefs.getString("soundMode","auto"))];
         model.setCalibration(prefs.getFloat("zeroX",0),prefs.getFloat("zeroY",0));
         sensors=(SensorManager)getSystemService(SENSOR_SERVICE);
         sensor=sensors.getDefaultSensor(Sensor.TYPE_GRAVITY);
@@ -83,6 +85,7 @@ public final class MainActivity extends Activity implements SensorEventListener 
             if(soundEnabled) playLevelTone(); else if(tone!=null) tone.stopTone();
             update();
         });
+        sound.setOnLongClickListener(v->{soundModeDialog();return true;});
         hold.setOnClickListener(v->{model.toggleHold(); announced=false; update();});
         settings.setOnClickListener(v->settings()); applyTheme(); update();
     }
@@ -122,7 +125,7 @@ public final class MainActivity extends Activity implements SensorEventListener 
     private void toast(int id) { Toast.makeText(this,id,Toast.LENGTH_SHORT).show(); }
     private void saveZero() { prefs.edit().putFloat("zeroX",(float)model.zeroX()).putFloat("zeroY",(float)model.zeroY()).apply(); }
     private void settings() {
-        dialog().setTitle(R.string.settings).setItems(new String[]{getString(R.string.language),getString(R.string.theme),getString(R.string.tolerance),getString(R.string.reset_calibration),getString(R.string.help)},(d,w)->{
+        dialog().setTitle(R.string.settings).setItems(new String[]{getString(R.string.language),getString(R.string.theme),getString(R.string.tolerance),getString(R.string.sound_mode),getString(R.string.reset_calibration),getString(R.string.help)},(d,w)->{
             if(w==0) dialog().setTitle(R.string.language).setSingleChoiceItems(new String[]{getString(R.string.system_language),"Русский","English"},languageIndex(),(a,i)->{
                 prefs.edit().putString("language",new String[]{"","ru","en"}[i]).apply(); a.dismiss(); recreate();
             }).setNegativeButton(R.string.cancel,null).show();
@@ -133,8 +136,17 @@ public final class MainActivity extends Activity implements SensorEventListener 
             if(w==2) dialog().setTitle(R.string.tolerance).setSingleChoiceItems(new String[]{"0.1°","0.3°","0.5°","1.0°"},toleranceIndex(),(a,i)->{
                 tolerance=new float[]{.1f,.3f,.5f,1f}[i]; prefs.edit().putFloat("tolerance",tolerance).apply(); announced=false; a.dismiss(); update();
             }).setNegativeButton(R.string.cancel,null).show();
-            if(w==3) { if(model.isHeld()) toast(R.string.unlock_first); else { model.clearCalibration();saveZero();toast(R.string.calibration_reset);update(); } }
-            if(w==4) dialog().setTitle(R.string.app_name).setMessage(R.string.help_text).setPositiveButton(android.R.string.ok,null).show();
+            if(w==3) soundModeDialog();
+            if(w==4) { if(model.isHeld()) toast(R.string.unlock_first); else { model.clearCalibration();saveZero();toast(R.string.calibration_reset);update(); } }
+            if(w==5) dialog().setTitle(R.string.app_name).setMessage(R.string.help_text).setPositiveButton(android.R.string.ok,null).show();
+        }).setNegativeButton(R.string.cancel,null).show();
+    }
+    private void soundModeDialog() {
+        dialog().setTitle(R.string.sound_mode).setSingleChoiceItems(new String[]{getString(R.string.sound_auto),getString(R.string.sound_both),getString(R.string.sound_x),getString(R.string.sound_y)},SignalMode.index(soundMode),(d,i)->{
+            soundMode=SignalMode.IDS[i];prefs.edit().putString("soundMode",soundMode).apply();
+            announced=false;activeSoundTarget="";
+            if(tone!=null)tone.stopTone();
+            d.dismiss();update();
         }).setNegativeButton(R.string.cancel,null).show();
     }
     private int languageIndex() { String s=prefs.getString("language",""); return s.equals("ru")?1:s.equals("en")?2:0; }
@@ -169,17 +181,28 @@ public final class MainActivity extends Activity implements SensorEventListener 
         boolean available=sensor!=null && registered;
         boolean good=model.ready() && model.stable() && accuracy!=SensorManager.SENSOR_STATUS_UNRELIABLE;
         boolean centered=model.ready() && Math.abs(model.x())<=tolerance && Math.abs(model.y())<=tolerance;
+        String target=SignalMode.resolve(soundMode,model.x()+model.zeroX(),model.y()+model.zeroY());
+        if(!target.equals(activeSoundTarget)) {
+            activeSoundTarget=target;announced=false;
+            if(tone!=null)tone.stopTone();
+        }
+        boolean signalAligned=model.ready() && SignalMode.aligned(target,model.x(),model.y(),tolerance);
         level.setReading(model.x(),model.y(),model.ready(),model.isHeld(),centered);
         calibrate.setEnabled(available && model.ready() && !model.isHeld()); calibrate.setAlpha(calibrate.isEnabled()?1f:.4f);
         hold.setEnabled(available && model.ready()); hold.setAlpha(hold.isEnabled()?1f:.4f);
         sound.setText("♪\n"+getString(soundEnabled?R.string.sound_on:R.string.sound_off)); sound.setTextColor(soundEnabled?theme.accent:theme.muted);
         sound.setContentDescription(getString(soundEnabled?R.string.sound_on:R.string.sound_off));
         hold.setText((model.isHeld()?"▣":"□")+"\n"+getString(model.isHeld()?R.string.release:R.string.hold)); hold.setContentDescription(getString(model.isHeld()?R.string.release:R.string.hold));
-        status.setText(!available?R.string.no_sensor:!model.ready()?R.string.waiting:model.isHeld()?R.string.frozen:accuracy==SensorManager.SENSOR_STATUS_UNRELIABLE?R.string.low_accuracy:!model.stable()?R.string.keep_still:centered?R.string.level_ok:R.string.measuring);
-        status.setTextColor(centered && good?theme.accent:theme.muted);
-        if(!centered || !good || model.isHeld()) announced=false;
+        int alignedText="x".equals(target)?R.string.level_x:"y".equals(target)?R.string.level_y:R.string.level_ok;
+        status.setText(!available?R.string.no_sensor:!model.ready()?R.string.waiting:model.isHeld()?R.string.frozen:accuracy==SensorManager.SENSOR_STATUS_UNRELIABLE?R.string.low_accuracy:!model.stable()?R.string.keep_still:signalAligned?alignedText:R.string.measuring);
+        if(soundEnabled && available && model.ready()) {
+            int control="x".equals(target)?R.string.control_x:"y".equals(target)?R.string.control_y:R.string.control_both;
+            status.append(" · "+getString(control));
+        }
+        status.setTextColor(signalAligned && good?theme.accent:theme.muted);
+        if(!signalAligned || !good || model.isHeld()) announced=false;
         long now=SystemClock.elapsedRealtime();
-        if(soundEnabled && centered && good && !model.isHeld() && !announced && now-lastBeep>1000 && tone!=null) {
+        if(soundEnabled && signalAligned && good && !model.isHeld() && !announced && now-lastBeep>1000 && tone!=null) {
             announced=playLevelTone();
         }
     }
