@@ -156,6 +156,11 @@ public final class MainActivity extends Activity implements SensorEventListener 
         content.setOrientation(LinearLayout.VERTICAL);
         content.setGravity(Gravity.CENTER);
         content.setPadding(dp(24),dp(16),dp(24),dp(16));
+        android.graphics.drawable.GradientDrawable card=new android.graphics.drawable.GradientDrawable();
+        card.setColor(0xff0a0c0d);
+        card.setCornerRadius(dp(16));
+        card.setStroke(dp(1),0xff654526);
+        content.setBackground(card);
         ImageView avatar=new ImageView(this);
         avatar.setImageResource(R.drawable.developer_avatar);
         avatar.setContentDescription(getString(R.string.developer_avatar));
