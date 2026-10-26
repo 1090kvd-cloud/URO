@@ -40,4 +40,11 @@
     <string name="sensor_details">Flat rotation: %1$s\n\nGyroscope: %2$s\n\nMagnetic sensor: %3$s\n\nRotation is relative to the starting position, not magnetic north. Small drift is possible. Tap 0° to reset.</string>
     <string name="developer">Developer</string>
     <string name="developer_avatar">KVD developer avatar</string>
+    <string name="donate_title">Support the project</string>
+    <string name="donate_note">The app is free. A donation is voluntary and does not unlock extra features.</string>
+    <string name="donate_qr_description">QR code for a donation to KVD on Boosty</string>
+    <string name="donate_hint">Scan with another device or tap Open Boosty below.</string>
+    <string name="donate_open">Open Boosty</string>
+    <string name="donate_no_browser">No app is available to open the link.</string>
+    <string name="donate_url" translatable="false">https://boosty.to/tvshortcutmaker/donate</string>
 </resources>

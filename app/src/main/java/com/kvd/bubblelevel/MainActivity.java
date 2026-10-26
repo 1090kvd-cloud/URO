@@ -132,7 +132,7 @@ public final class MainActivity extends Activity implements SensorEventListener 
     private void toast(int id) { Toast.makeText(this,id,Toast.LENGTH_SHORT).show(); }
     private void saveZero() { prefs.edit().putFloat("zeroX",(float)model.zeroX()).putFloat("zeroY",(float)model.zeroY()).apply(); }
     private void settings() {
-        dialog().setTitle(R.string.settings).setItems(new String[]{getString(R.string.language),getString(R.string.theme),getString(R.string.tolerance),getString(R.string.sound_mode),getString(R.string.reset_calibration),getString(R.string.help),getString(R.string.sensor_info),getString(R.string.developer)},(d,w)->{
+        dialog().setTitle(R.string.settings).setItems(new String[]{getString(R.string.language),getString(R.string.theme),getString(R.string.tolerance),getString(R.string.sound_mode),getString(R.string.reset_calibration),getString(R.string.help),getString(R.string.sensor_info),getString(R.string.developer),getString(R.string.donate_title)},(d,w)->{
             if(w==0) dialog().setTitle(R.string.language).setSingleChoiceItems(new String[]{getString(R.string.system_language),"Русский","English"},languageIndex(),(a,i)->{
                 prefs.edit().putString("language",new String[]{"","ru","en"}[i]).apply(); a.dismiss(); recreate();
             }).setNegativeButton(R.string.cancel,null).show();
@@ -148,6 +148,7 @@ public final class MainActivity extends Activity implements SensorEventListener 
             if(w==5) dialog().setTitle(R.string.app_name).setMessage(R.string.help_text).setPositiveButton(android.R.string.ok,null).show();
             if(w==6) sensorInfo();
             if(w==7) developerInfo();
+            if(w==8) donationInfo();
         }).setNegativeButton(R.string.cancel,null).show();
     }
     private void developerInfo() {
@@ -162,6 +163,48 @@ public final class MainActivity extends Activity implements SensorEventListener 
         content.addView(avatar,new LinearLayout.LayoutParams(dp(128),dp(128)));
         dialog().setTitle(R.string.developer).setView(content)
             .setPositiveButton(android.R.string.ok,null).show();
+    }
+    private void donationInfo() {
+        ScrollView scroll=new ScrollView(this);
+        LinearLayout content=new LinearLayout(this);
+        content.setOrientation(LinearLayout.VERTICAL);
+        content.setGravity(Gravity.CENTER_HORIZONTAL);
+        content.setPadding(dp(24),dp(12),dp(24),dp(16));
+        scroll.addView(content);
+        TextView note=new TextView(this);
+        note.setText(R.string.donate_note);
+        note.setTextColor(theme.text);
+        note.setTextSize(15);
+        note.setGravity(Gravity.CENTER);
+        content.addView(note,new LinearLayout.LayoutParams(-1,-2));
+        ImageView qr=new ImageView(this);
+        qr.setImageResource(R.drawable.donate_qr);
+        qr.setContentDescription(getString(R.string.donate_qr_description));
+        qr.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        LinearLayout.LayoutParams qrLayout=new LinearLayout.LayoutParams(-1,dp(240));
+        qrLayout.topMargin=dp(16);
+        content.addView(qr,qrLayout);
+        TextView hint=new TextView(this);
+        hint.setText(R.string.donate_hint);
+        hint.setTextColor(theme.text);
+        hint.setTextSize(14);
+        hint.setGravity(Gravity.CENTER);
+        hint.setPadding(0,dp(12),0,dp(8));
+        content.addView(hint,new LinearLayout.LayoutParams(-1,-2));
+        TextView address=new TextView(this);
+        address.setText(R.string.donate_url);
+        address.setTextColor(theme.text);
+        address.setTextSize(12);
+        address.setGravity(Gravity.CENTER);
+        address.setTextIsSelectable(true);
+        content.addView(address,new LinearLayout.LayoutParams(-1,-2));
+        dialog().setTitle(R.string.donate_title).setView(scroll)
+            .setNegativeButton(android.R.string.cancel,null)
+            .setPositiveButton(R.string.donate_open,(d,w)->{
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW,android.net.Uri.parse(getString(R.string.donate_url))));
+                } catch(ActivityNotFoundException e) {toast(R.string.donate_no_browser);}
+            }).show();
     }
     private void soundModeDialog() {
         dialog().setTitle(R.string.sound_mode).setSingleChoiceItems(new String[]{getString(R.string.sound_auto),getString(R.string.sound_both),getString(R.string.sound_x),getString(R.string.sound_y)},SignalMode.index(soundMode),(d,i)->{
