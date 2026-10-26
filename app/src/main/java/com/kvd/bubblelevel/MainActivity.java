@@ -132,7 +132,7 @@ public final class MainActivity extends Activity implements SensorEventListener 
     private void toast(int id) { Toast.makeText(this,id,Toast.LENGTH_SHORT).show(); }
     private void saveZero() { prefs.edit().putFloat("zeroX",(float)model.zeroX()).putFloat("zeroY",(float)model.zeroY()).apply(); }
     private void settings() {
-        dialog().setTitle(R.string.settings).setItems(new String[]{getString(R.string.language),getString(R.string.theme),getString(R.string.tolerance),getString(R.string.sound_mode),getString(R.string.reset_calibration),getString(R.string.help),getString(R.string.sensor_info)},(d,w)->{
+        dialog().setTitle(R.string.settings).setItems(new String[]{getString(R.string.language),getString(R.string.theme),getString(R.string.tolerance),getString(R.string.sound_mode),getString(R.string.reset_calibration),getString(R.string.help),getString(R.string.sensor_info),getString(R.string.developer)},(d,w)->{
             if(w==0) dialog().setTitle(R.string.language).setSingleChoiceItems(new String[]{getString(R.string.system_language),"Русский","English"},languageIndex(),(a,i)->{
                 prefs.edit().putString("language",new String[]{"","ru","en"}[i]).apply(); a.dismiss(); recreate();
             }).setNegativeButton(R.string.cancel,null).show();
@@ -147,7 +147,21 @@ public final class MainActivity extends Activity implements SensorEventListener 
             if(w==4) { if(model.isHeld()) toast(R.string.unlock_first); else { model.clearCalibration();saveZero();toast(R.string.calibration_reset);update(); } }
             if(w==5) dialog().setTitle(R.string.app_name).setMessage(R.string.help_text).setPositiveButton(android.R.string.ok,null).show();
             if(w==6) sensorInfo();
+            if(w==7) developerInfo();
         }).setNegativeButton(R.string.cancel,null).show();
+    }
+    private void developerInfo() {
+        LinearLayout content=new LinearLayout(this);
+        content.setOrientation(LinearLayout.VERTICAL);
+        content.setGravity(Gravity.CENTER);
+        content.setPadding(dp(24),dp(16),dp(24),dp(16));
+        ImageView avatar=new ImageView(this);
+        avatar.setImageResource(R.drawable.developer_avatar);
+        avatar.setContentDescription(getString(R.string.developer_avatar));
+        avatar.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        content.addView(avatar,new LinearLayout.LayoutParams(dp(128),dp(128)));
+        dialog().setTitle(R.string.developer).setView(content)
+            .setPositiveButton(android.R.string.ok,null).show();
     }
     private void soundModeDialog() {
         dialog().setTitle(R.string.sound_mode).setSingleChoiceItems(new String[]{getString(R.string.sound_auto),getString(R.string.sound_both),getString(R.string.sound_x),getString(R.string.sound_y)},SignalMode.index(soundMode),(d,i)->{

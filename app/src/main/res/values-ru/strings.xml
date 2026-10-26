@@ -38,4 +38,6 @@
     <string name="rotation_fused">Гироскоп с коррекцией наклона</string>
     <string name="rotation_gyro">Гироскоп</string>
     <string name="sensor_details">Поворот плашмя: %1$s\n\nГироскоп: %2$s\n\nМагнитный датчик: %3$s\n\nПоворот считается от начального положения, а не от севера. Возможно небольшое накопление ошибки. Для сброса нажмите 0°.</string>
+    <string name="developer">Разработчик</string>
+    <string name="developer_avatar">Аватар разработчика KVD</string>
 </resources>

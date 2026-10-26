@@ -38,4 +38,6 @@
     <string name="rotation_fused">Gyroscope with tilt correction</string>
     <string name="rotation_gyro">Gyroscope</string>
     <string name="sensor_details">Flat rotation: %1$s\n\nGyroscope: %2$s\n\nMagnetic sensor: %3$s\n\nRotation is relative to the starting position, not magnetic north. Small drift is possible. Tap 0° to reset.</string>
+    <string name="developer">Developer</string>
+    <string name="developer_avatar">KVD developer avatar</string>
 </resources>
