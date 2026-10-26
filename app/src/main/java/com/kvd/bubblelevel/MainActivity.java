@@ -43,7 +43,11 @@ public final class MainActivity extends Activity implements SensorEventListener 
     }
     @Override public void onCreate(Bundle state) {
         prefs=getSharedPreferences("level",MODE_PRIVATE);
-        theme=LevelTheme.fromId(prefs.getString("theme","classic"));
+        // Apply the requested KVD theme once; subsequent theme choices remain saved.
+        if(!prefs.getBoolean("kvd_palette_applied",false)) {
+            prefs.edit().putString("theme","amber").putBoolean("kvd_palette_applied",true).apply();
+        }
+        theme=LevelTheme.fromId(prefs.getString("theme","amber"));
         setTheme(themeStyle());
         super.onCreate(state);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);

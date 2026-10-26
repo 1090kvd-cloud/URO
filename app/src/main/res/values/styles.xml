@@ -1,8 +1,8 @@
 <resources>
     <style name="AppTheme" parent="android:style/Theme.Material.NoActionBar">
-        <item name="android:forceDarkAllowed">false</item><item name="android:fontFamily">sans</item><item name="android:colorAccent">#D5EF28</item><item name="android:windowLightStatusBar">false</item><item name="android:windowActionModeOverlay">true</item><item name="android:windowBackground">#000000</item><item name="android:windowNoTitle">true</item>
+        <item name="android:forceDarkAllowed">false</item><item name="android:fontFamily">sans</item><item name="android:colorAccent">#FFA52C</item><item name="android:windowLightStatusBar">false</item><item name="android:windowActionModeOverlay">true</item><item name="android:windowBackground">#070709</item><item name="android:windowNoTitle">true</item>
     </style>
-    <style name="AmberTheme" parent="AppTheme"><item name="android:colorAccent">#FFCB55</item></style>
+    <style name="AmberTheme" parent="AppTheme"><item name="android:colorAccent">#FFA52C</item></style>
     <style name="BlueTheme" parent="AppTheme"><item name="android:colorAccent">#73E3FF</item></style>
     <style name="LightTheme" parent="android:style/Theme.Material.Light.NoActionBar">
         <item name="android:forceDarkAllowed">false</item><item name="android:fontFamily">sans</item><item name="android:colorAccent">#006E7D</item><item name="android:windowLightStatusBar">true</item><item name="android:windowBackground">#EEF1F4</item><item name="android:windowNoTitle">true</item>

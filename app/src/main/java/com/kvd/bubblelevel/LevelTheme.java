@@ -9,20 +9,20 @@ public final class LevelTheme {
     public final int[] vial,bubble,frame;
     private LevelTheme(String id,boolean light,int accent,int[] vial,int[] bubble) {
         this.id=id;this.light=light;this.accent=accent;this.vial=vial;this.bubble=bubble;
-        background=light?0xffeef1f4:0xff000000;
-        text=light?0xff182a35:0xffeeeeee;
-        muted=light?0xff465c68:0xffb9c2c7;
+        background=light?0xffeef1f4:0xff070709;
+        text=light?0xff182a35:0xfff4eee6;
+        muted=light?0xff465c68:0xffb9ada0;
         line=light?0xff224c55:mix(vial[0],0xff000000,.45f);
         ring=light?0xff205966:mix(accent,0xffffffff,.45f);
         screenTop=light?0xfff8fcfe:mix(accent,0xff000000,.94f);
         screenBottom=light?0xffdce8ec:mix(accent,0xff000000,.83f);
         digitOff=light?0xffb9cdd2:mix(accent,0xff000000,.84f);
-        buttonTop=light?0xfffcfefe:0xff393939;
-        buttonBottom=light?0xffd8e1e6:0xff131313;
-        frame=light?new int[]{0xfff9fbfc,0xff9baeb8,0xffd9e3e8,0xff7a909b}:new int[]{0xff99998d,0xff383936,0xff696962,0xff151613};
+        buttonTop=light?0xfffcfefe:("amber".equals(id)?0xff30241a:0xff29292b);
+        buttonBottom=light?0xffd8e1e6:0xff101013;
+        frame=light?new int[]{0xfff9fbfc,0xff9baeb8,0xffd9e3e8,0xff7a909b}:("amber".equals(id)?new int[]{0xffb58f60,0xff3c2f22,0xff80603d,0xff161412}:new int[]{0xff999999,0xff38383a,0xff69696b,0xff151518});
     }
     public static LevelTheme fromId(String id) {
-        if("amber".equals(id)) return new LevelTheme("amber",false,0xffffcb55,new int[]{0xff875409,0xffef9d15,0xffffd75b,0xffdc921a,0xff583506},new int[]{0xffffedb0,0xffedb947,0xff9d621a});
+        if("amber".equals(id)) return new LevelTheme("amber",false,0xffffa52c,new int[]{0xff7b3506,0xffef7d0f,0xffffd264,0xffd87812,0xff4d2607},new int[]{0xffffedb0,0xffedb947,0xff9d621a});
         if("blue".equals(id)) return new LevelTheme("blue",false,0xff73e3ff,new int[]{0xff145778,0xff36b9ec,0xffa1efff,0xff309ecf,0xff0a334b},new int[]{0xffe4fbff,0xff8adbf2,0xff2e7c9b});
         if("light".equals(id)) return new LevelTheme("light",true,0xff006e7d,new int[]{0xff398a94,0xff8ad9df,0xffd3f8f6,0xff78c9cf,0xff286c77},new int[]{0xfff9ffff,0xffb6edeb,0xff4b9da7});
         return new LevelTheme("classic",false,0xffddfa17,new int[]{0xff658a05,0xffbde908,0xffd8f732,0xffa9ce0a,0xff506204},new int[]{0xffe0f780,0xffbfdc3f,0xff729524});

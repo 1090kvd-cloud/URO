@@ -15,17 +15,17 @@ public final class LevelView extends View {
     private int rotationTitle=R.string.rotation_angle;
     private boolean ready,held,centered;
     private long lastDescription;
-    private LevelTheme theme=LevelTheme.fromId("classic");
+    private LevelTheme theme=LevelTheme.fromId("amber");
     public LevelView(Context context) {
         super(context);
         Bitmap tile=Bitmap.createBitmap(128,128,Bitmap.Config.ARGB_8888);
         Canvas c=new Canvas(tile); Random r=new Random(47);
-        c.drawColor(0xff11120f);
+        c.drawColor(0xff101012);
         for(int i=0;i<1800;i++) {
             float px=r.nextInt(128),py=r.nextInt(128),radius=1+r.nextFloat()*2;
-            int a=12+r.nextInt(17); p.setColor(Color.rgb(a,a,a-2));
+            int a=10+r.nextInt(10); p.setColor(Color.rgb(a,a,a+2));
             c.drawOval(px,py,px+radius*2,py+radius*3,p);
-            p.setColor(0xff050604); p.setStrokeWidth(.7f);c.drawLine(px,py+radius*3,px+radius*2,py+radius*3,p);
+            p.setColor(0xff070709); p.setStrokeWidth(.7f);c.drawLine(px,py+radius*3,px+radius*2,py+radius*3,p);
         }
         leather=new BitmapShader(tile,Shader.TileMode.REPEAT,Shader.TileMode.REPEAT);
         setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_YES);
@@ -45,10 +45,11 @@ public final class LevelView extends View {
     private void round(Canvas c,float l,float t,float r,float b,float rad) { rect.set(l,t,r,b);c.drawRoundRect(rect,rad,rad,p); }
     @Override protected void onDraw(Canvas c) {
         super.onDraw(c);
+        c.drawColor(theme.background);
         float s=Math.min(getWidth()/360f,getHeight()/594f);
         c.save();c.translate((getWidth()-360*s)/2,(getHeight()-594*s)/2);c.scale(s,s);
         fill(theme.background); if(!theme.light) p.setShader(leather);c.drawRect(0,0,360,594,p);p.setShader(null);
-        if(!theme.light) p.setShader(new RadialGradient(180,230,380,new int[]{0x00000000,0xff000000},new float[]{.35f,1f},Shader.TileMode.CLAMP));c.drawRect(0,0,360,594,p);p.setShader(null);
+        if(!theme.light) p.setShader(new RadialGradient(180,230,380,new int[]{0x00000000,theme.background},new float[]{.35f,1f},Shader.TileMode.CLAMP));c.drawRect(0,0,360,594,p);p.setShader(null);
         vial(c,14,42,346,116,false);
         vial(c,14,160,74,470,true);
         circular(c,230,315,94);
