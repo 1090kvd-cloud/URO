@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="520" viewBox="0 0 1280 520" role="img" aria-labelledby="title desc">
+  <title id="title">Уровень — инструмент для Android от KVD</title>
+  <desc id="desc">Графитовая обложка с оранжевой иллюстрацией пузырькового уровня. Иллюстрация, не снимок интерфейса.</desc>
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#191410"/><stop offset="1" stop-color="#070709"/></linearGradient>
+    <linearGradient id="gold" x2="0" y2="1"><stop stop-color="#ffd264"/><stop offset="1" stop-color="#ef7d0f"/></linearGradient>
+    <radialGradient id="glass"><stop stop-color="#ffd264"/><stop offset=".75" stop-color="#d87812"/><stop offset="1" stop-color="#4d2607"/></radialGradient>
+  </defs>
+  <rect width="1280" height="520" rx="28" fill="url(#bg)"/>
+  <path d="M0 485H1280" stroke="#ffa52c" stroke-opacity=".22"/>
+  <g font-family="sans-serif">
+    <text x="72" y="105" font-size="23" fill="#ffa52c" letter-spacing="5">KVD · ANDROID</text>
+    <text x="68" y="226" font-size="92" font-weight="700" fill="#f4eee6">Уровень</text>
+    <text x="74" y="285" font-size="29" fill="#b9ada0">Горизонталь. Вертикаль. Поворот.</text>
+    <g font-size="20" fill="#e2d8c9"><text x="74" y="379">Градусные шкалы</text><text x="74" y="414">Калибровка и звуковой контроль</text></g>
+    <text x="74" y="470" font-size="17" fill="#a3988c">Бесплатно · Без рекламы · Работает без интернета</text>
+  </g>
+  <g transform="translate(995 275)">
+    <circle r="168" fill="none" stroke="#ffa52c" stroke-opacity=".2"/>
+    <circle r="143" fill="#110e0c" stroke="#80603d" stroke-width="5"/>
+    <circle r="124" fill="url(#glass)"/>
+    <path d="M-123 0H123M0-123V123" stroke="#673106" stroke-width="2"/>
+    <circle r="52" fill="none" stroke="#fff0ba" stroke-width="2"/>
+    <circle r="27" fill="#ffe7a1" stroke="#9d621a" stroke-width="3"/>
+    <g stroke="#b9ada0" stroke-width="2"><path d="M0-160V-150M0 150V160M-160 0H-150M150 0H160M-113-113L-106-106M113 113L106 106M113-113L106-106M-113 113L-106 106"/></g>
+    <g fill="#e2d8c9" font-family="sans-serif" font-size="16" text-anchor="middle"><text y="-180">0°</text><text x="187" y="6">90°</text><text y="196">180°</text><text x="-190" y="6">270°</text></g>
+    <path d="M0-151L-8-137H8Z" fill="#ffa52c"/>
+  </g>
+</svg>
