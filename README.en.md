@@ -31,13 +31,17 @@
 | 🌐 Languages | Russian and English |
 | 📴 Offline | Measurements run locally; only the Boosty link requires a browser |
 
-## 📸 Settings
+## 📸 Screenshots
 
-<div align="center">
-<img src="docs/screenshots/settings.png" width="320" alt="Uroven settings with support link and KVD avatar">
-</div>
+<table>
+<tr><th>Main screen</th><th>Settings</th></tr>
+<tr>
+<td align="center" valign="top"><img src="docs/screenshots/main.jpg" width="300" alt="Uroven main screen with vials, degree scales and tilt readings"></td>
+<td align="center" valign="top"><img src="docs/screenshots/settings.png" width="300" alt="Uroven settings with support link and KVD avatar"></td>
+</tr>
+</table>
 
-Actual settings screenshot supplied by the user from version 1.5.2. Version 1.5.3 applies the same palette to nested dialogs. The cover above is an illustration.
+Actual main-screen and settings screenshots supplied by the user. The settings screenshot is from version 1.5.2; version 1.5.3 applies the same palette to nested dialogs. The cover above is an illustration.
 
 ## 📥 Install
 
