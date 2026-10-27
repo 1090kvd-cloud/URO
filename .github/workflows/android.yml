@@ -27,5 +27,5 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: Uroven-APK
-          path: build/Uroven-1.5.2.apk
+          path: build/Uroven-1.5.3.apk
           if-no-files-found: error

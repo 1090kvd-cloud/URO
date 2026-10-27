@@ -2,7 +2,8 @@
     <style name="KvdDialogTheme" parent="android:style/Theme.Material.Dialog.Alert">
         <item name="android:colorAccent">#FFA52C</item>
         <item name="android:colorBackground">#0C0C0E</item>
-        <item name="android:windowBackground">#0C0C0E</item>
+        <item name="android:colorBackgroundFloating">#0C0C0E</item>
+        <item name="android:windowBackground">@drawable/kvd_dialog_background</item>
         <item name="android:textColorPrimary">#EDE6DF</item>
         <item name="android:textColorSecondary">#AAA197</item>
         <item name="android:fontFamily">sans</item>
