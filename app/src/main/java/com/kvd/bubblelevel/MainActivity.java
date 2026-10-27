@@ -116,7 +116,8 @@ public final class MainActivity extends Activity implements SensorEventListener 
             default: return R.style.AppTheme;
         }
     }
-    private AlertDialog.Builder dialog() { return new AlertDialog.Builder(new ContextThemeWrapper(this,themeStyle())); }
+    private static final int MENU_BACKGROUND=0xff0c0c0e, MENU_TEXT=0xffede6df, MENU_ACCENT=0xffffa52c;
+    private AlertDialog.Builder dialog() { return new AlertDialog.Builder(new ContextThemeWrapper(this,R.style.KvdDialogTheme)); }
     private void styleButton(Button b) {
         b.setTextColor(theme.text);
         android.graphics.drawable.GradientDrawable bg=new android.graphics.drawable.GradientDrawable(android.graphics.drawable.GradientDrawable.Orientation.TOP_BOTTOM,new int[]{theme.buttonTop,theme.buttonBottom});
@@ -136,7 +137,77 @@ public final class MainActivity extends Activity implements SensorEventListener 
     private void toast(int id) { Toast.makeText(this,id,Toast.LENGTH_SHORT).show(); }
     private void saveZero() { prefs.edit().putFloat("zeroX",(float)model.zeroX()).putFloat("zeroY",(float)model.zeroY()).apply(); }
     private void settings() {
-        dialog().setTitle(R.string.settings).setItems(new String[]{getString(R.string.language),getString(R.string.theme),getString(R.string.tolerance),getString(R.string.sound_mode),getString(R.string.reset_calibration),getString(R.string.help),getString(R.string.sensor_info),getString(R.string.developer),getString(R.string.donate_title)},(d,w)->{
+        ScrollView scroll=new ScrollView(this);
+        LinearLayout menu=new LinearLayout(this);
+        menu.setOrientation(LinearLayout.VERTICAL);
+        menu.setPadding(dp(12),dp(8),dp(12),dp(8));
+        menu.setBackgroundColor(MENU_BACKGROUND);
+        scroll.addView(menu);
+        AlertDialog panel=dialog().setTitle(R.string.settings).setView(scroll)
+            .setNegativeButton(R.string.cancel,null).create();
+        int[] labels={R.string.language,R.string.theme,R.string.tolerance,R.string.sound_mode,
+            R.string.reset_calibration,R.string.help,R.string.sensor_info};
+        for(int i=0;i<labels.length;i++) {
+            final int action=i;
+            TextView row=settingsRow(getString(labels[i]));
+            row.setOnClickListener(v->{panel.dismiss();settingsAction(action);});
+            menu.addView(row,new LinearLayout.LayoutParams(-1,-2));
+        }
+        TextView support=settingsRow("\u2665  "+getString(R.string.donate_title));
+        LinearLayout.LayoutParams supportLayout=new LinearLayout.LayoutParams(-1,-2);
+        supportLayout.topMargin=dp(12);
+        menu.addView(support,supportLayout);
+        support.setOnClickListener(v->{panel.dismiss();donationInfo();});
+        LinearLayout author=new LinearLayout(this);
+        author.setGravity(Gravity.CENTER_VERTICAL);
+        author.setPadding(dp(12),dp(16),dp(12),dp(12));
+        ImageView avatar=new ImageView(this);
+        avatar.setImageResource(R.drawable.developer_avatar);
+        avatar.setContentDescription(getString(R.string.developer_avatar));
+        avatar.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        android.graphics.drawable.GradientDrawable circle=new android.graphics.drawable.GradientDrawable();
+        circle.setShape(android.graphics.drawable.GradientDrawable.OVAL);
+        circle.setColor(MENU_BACKGROUND);
+        avatar.setBackground(circle);avatar.setClipToOutline(true);
+        author.addView(avatar,new LinearLayout.LayoutParams(dp(48),dp(48)));
+        TextView name=new TextView(this);
+        name.setText(R.string.developer);name.setTextColor(MENU_TEXT);name.setTextSize(16);
+        name.setTypeface(null,android.graphics.Typeface.BOLD);
+        name.setPadding(dp(14),0,0,0);
+        author.addView(name,new LinearLayout.LayoutParams(-2,-2));
+        styleSettingsRow(author);
+        author.setOnClickListener(v->{panel.dismiss();developerInfo();});
+        menu.addView(author,new LinearLayout.LayoutParams(-1,-2));
+        panel.show();
+        if(panel.getWindow()!=null) {
+            android.graphics.drawable.GradientDrawable background=new android.graphics.drawable.GradientDrawable();
+            background.setColor(MENU_BACKGROUND);background.setCornerRadius(dp(20));
+            panel.getWindow().setBackgroundDrawable(background);
+            panel.getWindow().setLayout((int)(getResources().getDisplayMetrics().widthPixels*.9f),-2);
+        }
+        panel.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(MENU_ACCENT);
+    }
+    private TextView settingsRow(String label) {
+        TextView row=new TextView(this);
+        row.setText(label);row.setTextSize(17);row.setTextColor(MENU_TEXT);
+        row.setGravity(Gravity.CENTER_VERTICAL);row.setMinHeight(dp(52));
+        row.setPadding(dp(16),dp(12),dp(16),dp(12));
+        styleSettingsRow(row);
+        return row;
+    }
+    private void styleSettingsRow(View row) {
+        android.graphics.drawable.GradientDrawable shape=new android.graphics.drawable.GradientDrawable();
+        shape.setColor(0x00000000);shape.setCornerRadius(dp(12));
+        android.graphics.drawable.GradientDrawable selected=new android.graphics.drawable.GradientDrawable();
+        selected.setColor(0xff302315);selected.setCornerRadius(dp(12));
+        android.graphics.drawable.StateListDrawable states=new android.graphics.drawable.StateListDrawable();
+        states.addState(new int[]{android.R.attr.state_focused},selected);
+        states.addState(new int[]{},shape);
+        row.setBackground(new android.graphics.drawable.RippleDrawable(
+            android.content.res.ColorStateList.valueOf(0x44ffa52c),states,null));
+        row.setFocusable(true);row.setClickable(true);
+    }
+    private void settingsAction(int w) {
             if(w==0) dialog().setTitle(R.string.language).setSingleChoiceItems(new String[]{getString(R.string.system_language),"Русский","English"},languageIndex(),(a,i)->{
                 prefs.edit().putString("language",new String[]{"","ru","en"}[i]).apply(); a.dismiss(); recreate();
             }).setNegativeButton(R.string.cancel,null).show();
@@ -151,9 +222,6 @@ public final class MainActivity extends Activity implements SensorEventListener 
             if(w==4) { if(model.isHeld()) toast(R.string.unlock_first); else { model.clearCalibration();saveZero();toast(R.string.calibration_reset);update(); } }
             if(w==5) dialog().setTitle(R.string.app_name).setMessage(R.string.help_text).setPositiveButton(android.R.string.ok,null).show();
             if(w==6) sensorInfo();
-            if(w==7) developerInfo();
-            if(w==8) donationInfo();
-        }).setNegativeButton(R.string.cancel,null).show();
     }
     private void developerInfo() {
         LinearLayout content=new LinearLayout(this);
@@ -182,7 +250,7 @@ public final class MainActivity extends Activity implements SensorEventListener 
         scroll.addView(content);
         TextView note=new TextView(this);
         note.setText(R.string.donate_note);
-        note.setTextColor(theme.text);
+        note.setTextColor(MENU_TEXT);
         note.setTextSize(15);
         note.setGravity(Gravity.CENTER);
         content.addView(note,new LinearLayout.LayoutParams(-1,-2));
@@ -195,14 +263,14 @@ public final class MainActivity extends Activity implements SensorEventListener 
         content.addView(qr,qrLayout);
         TextView hint=new TextView(this);
         hint.setText(R.string.donate_hint);
-        hint.setTextColor(theme.text);
+        hint.setTextColor(MENU_TEXT);
         hint.setTextSize(14);
         hint.setGravity(Gravity.CENTER);
         hint.setPadding(0,dp(12),0,dp(8));
         content.addView(hint,new LinearLayout.LayoutParams(-1,-2));
         TextView address=new TextView(this);
         address.setText(R.string.donate_url);
-        address.setTextColor(theme.text);
+        address.setTextColor(MENU_TEXT);
         address.setTextSize(12);
         address.setGravity(Gravity.CENTER);
         address.setTextIsSelectable(true);
